@@ -75,6 +75,7 @@ spec:
     metadata:
       labels:
         app: company-app-cobra
+        service: company-app
     spec:
       serviceAccountName: ctf-sa
       containers:
@@ -98,8 +99,23 @@ spec:
     metadata:
       labels:
         app: company-app-viper
+        service: company-app
     spec:
       serviceAccountName: ctf-sa
       containers:
       - image: alexnisulescu/nginx:viper
         name: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: company-app
+  namespace: ctf
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    service: company-app
+  type: LoadBalancer
